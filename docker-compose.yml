@@ -1,0 +1,29 @@
+version: '3'
+services:
+  backend:
+    container_name: backend
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/backend
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    networks:
+      reango-network:
+        ipv4_address: 172.27.0.2
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+    networks:
+      reango-network:
+        ipv4_address: 172.27.0.3
+networks:
+  reango-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.27.0.0/16
